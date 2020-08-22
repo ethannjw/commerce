@@ -18,12 +18,22 @@
         </div>
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+                <a class="nav-link" href="{% url 'viewauction' %}">Active Listings</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'createauction' %}">Create Auction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listcategories' %}">View Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'viewwatchlist' %}">View Watchlist</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
+
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Log In</a>

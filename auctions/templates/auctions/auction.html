@@ -1,0 +1,44 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+  <h2>List Auctions{% if category_name %} from category {{ category_name }}{% endif %}</h2>
+  {% if message %}
+    <div>{{ message }}</div>
+  {% endif %}
+
+
+    <div>
+      <h2><a href="#">{{auction.auction_name}}</a></h2>
+      <p>{{auction.description}}</p>
+      {% if auction.image_url %}
+        <img src="{{auction.image_url}}" alt="No img" />
+      {% endif %}
+      <p>Start Price: {{auction.start_price}}</p>
+      <p>Highest Bid: {{auction.close_price}}</p>
+      <p>Created: {{auction.created_time}}</p>
+      <p>Created by: {{auction.creator}}</p>
+        {% if auction.open_status %}
+          {% if user.is_authenticated %}
+            <form action="{% url 'bid_auction' %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-primary" type="submit">Bid for it!</button>
+            </form>
+            <form action="{% url 'addwatchlist' %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-primary" type="submit">Add to watchlist</button>
+            </form>
+            {% if auction.creator == user %}
+              <form action="{% url 'addwatchlist' %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-primary" type="submit">Close this auction</button>
+              </form>
+            {% endif %}
+          {% endif %}
+        {% else %}
+          <h3>Auction closed</h3>
+        {% endif %}
+    </div>
+
+
+
+
+{% endblock %}
