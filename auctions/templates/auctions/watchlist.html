@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+  <h2>My Watchlist</h2>
+  {% if message %}
+    <div>{{ message }}</div>
+  {% endif %}
+
+  {% for auction in watchlist %}
+    <div>
+      <h3><a href="{% url 'view-auction' auction.id %}">{{auction.auction_name}}</a></h3>
+
+    </div>
+  {% endfor%}
+
+
+{% endblock %}

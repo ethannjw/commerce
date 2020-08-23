@@ -1,13 +1,133 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 {% block body %}
-  <h2>List Auctions{% if category_name %} from category {{ category_name }}{% endif %}</h2>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'auctions/img/breadcrumb.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>{{auction.auction_name}}</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{% url 'index' %}">Home</a>
+                        <span>{{auction.auction_name}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<section class="product-details spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="product__details__pic">
+              <div class="product__details__pic__item">
+                  <img class="product__details__pic__item--large"
+                      src="{{auction.image_url}}" alt="">
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <div class="product__details__text">
+            <h3>{{auction.auction_name}}</h3>
+            <div class="product__details__price">Start Price: {{auction.start_price}}</div>
+            <div class="product__details__price">Highest Bid: {{auction.close_price}}</div>
+            <p>{{auction.description}}</p>
+            {% if auction.open_status %}
+              {% if user.is_authenticated %}
+                <form action="{% url 'bid-auction' %}" method="post">
+                  {% csrf_token %}
+                    <div class="product__details__quantity">
+                      <input type="hidden" name="auction_id" value="{{auction.id}}"/>
+                      {{ bid_form }}
+                    </div>
+                  <button class="site-btn" type="submit">Bid for it!</button>
+                </form>
+              {% endif %}
+            {% endif %}
+            <form action="{% url 'add-watchlist' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="auction_id" value="{{auction.id}}"/>
+              <button class="heart-icon" type="submit"><span class="icon_heart_alt"></span></button>
+            </form>
+            <ul>
+                <li><b>Created</b> <span>{{auction.created_time}}</span></li>
+                <li><b>Created by</b> <span>{{auction.creator}}</span></li>
+                {% if auction.open_status %}
+                <li><b>Status</b> <span>Open</span></li>
+                {% else %}
+                <li><b>Status</b> <span>Closed</span></li>
+                {% endif %}
+                <li><b>Share on</b>
+                    <div class="share">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-12">
+    <div class="product__details__tab">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tabs-1" role="tab"
+                  aria-selected="true">Bids</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                  aria-selected="false">Comments</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                <div class="product__details__tab__desc">
+                  {% if bids %}
+                    {% for bid in bids %}
+                      <h6>Bid by: {{bid.user}} at {{bid.bid_time}}</h6>
+                      <p>Price: {{bid.bid_price}}</p>
+                    {% endfor %}
+                  {% else %}
+                    <h6>No Bids</h6>
+                  {% endif %}
+            </div>
+          </div>
+            <div class="tab-pane" id="tabs-2" role="tabpanel">
+                <div class="product__details__tab__desc">
+                  <form action="{% url 'add-comment' %}" method="post">
+                    {% csrf_token %}
+                    {{ comment_form }}
+                    <input type="hidden" name="auction_id" value="{{auction.id}}"/>
+                    <button class="primary-btn" id="comment-button" type="submit">Comment</button>
+                  </form>
+                  {% if comments %}
+                    {% for comment in comments %}
+                      <h6>Comment by: {{comment.user}} at {{comment.commented_time}}</h6>
+                      <p>{{comment.comment}}</p>
+                    {% endfor %}
+                  {% else %}
+                    <p>No Comments</p>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</section>
   {% if message %}
     <div>{{ message }}</div>
   {% endif %}
-
-
-    <div>
-      <h2><a href="#">{{auction.auction_name}}</a></h2>
+    </div>
+  </div>
+</section>
+    <!-- <div>
+      <h2>{{auction.auction_name}}</h2>
       <p>{{auction.description}}</p>
       {% if auction.image_url %}
         <img src="{{auction.image_url}}" alt="No img" />
@@ -18,27 +138,65 @@
       <p>Created by: {{auction.creator}}</p>
         {% if auction.open_status %}
           {% if user.is_authenticated %}
-            <form action="{% url 'bid_auction' %}" method="post">
+
+            <form action="{% url 'add-watchlist' %}" method="post">
               {% csrf_token %}
-              <button class="btn btn-primary" type="submit">Bid for it!</button>
-            </form>
-            <form action="{% url 'addwatchlist' %}" method="post">
-              {% csrf_token %}
+              <input type="hidden" name="auction_id" value="{{auction.id}}"/>
               <button class="btn btn-primary" type="submit">Add to watchlist</button>
             </form>
+
             {% if auction.creator == user %}
-              <form action="{% url 'addwatchlist' %}" method="post">
+              <form action="{% url 'close-auction' %}" method="post">
                 {% csrf_token %}
+                <input type="hidden" name="auction_id" value="{{auction.id}}"/>
                 <button class="btn btn-primary" type="submit">Close this auction</button>
+              </form>
+            {% else %}
+              <form action="{% url 'bid-auction' %}" method="post">
+                {% csrf_token %}
+                {% if bid_form %}
+                {{ bid_form }}
+                {% endif %}
+                <input type="hidden" name="auction_id" value="{{auction.id}}"/>
+                <button class="btn btn-primary" type="submit">Bid for it!</button>
               </form>
             {% endif %}
           {% endif %}
         {% else %}
-          <h3>Auction closed</h3>
+          <h3>Auction won by {{auction.winner}}. Congrats!</h3>
         {% endif %}
     </div>
+    <div>
+      <h2>Current Bids</h2>
+        {% if bids %}
+          {% for bid in bids %}
+            <p>Bid by: {{bid.user}}</p>
+            <p>Price: {{bid.bid_price}}</p>
+            <p>Time: {{bid.bid_time}}</p>
+          {% endfor %}
+        {% else %}
+          <p>No Bids</p>
+        {% endif %}
+    </div>
+    <div>
+      <h2>Comments</h2>
+      <form action="{% url 'add-comment' %}" method="post">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="hidden" name="auction_id" value="{{auction.id}}"/>
+        <button class="btn btn-primary" id="comment-button" type="submit">Comment</button>
+      </form>
+      {% if comments %}
+        {% for comment in comments %}
+          <p>Comment by: {{comment.user}}</p>
+          <p>Comment: {{comment.comment}}</p>
+          <p>Time: {{comment.commented_time}}</p>
+        {% endfor %}
+      {% else %}
+        <p>No Comments</p>
+      {% endif %}
+    </div>
 
-
-
+ -->
 
 {% endblock %}
