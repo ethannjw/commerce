@@ -78,9 +78,13 @@ def add_watchlist(request):
 @login_required
 def view_watchlist(request, user_id):
     watchlist = User.objects.get(id=user_id).watched_list.all()
+    # return render(request, "auctions/watchlist.html", {
+    #     "watchlist": watchlist
+    # })
     return render(request, "auctions/watchlist.html", {
-        "watchlist": watchlist
-    })
+                    'categories': categories,
+                    "auctions": watchlist,
+                    })
 
 @require_http_methods(["POST"])
 @login_required
