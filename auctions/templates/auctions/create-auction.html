@@ -1,70 +1,29 @@
 {% extends "auctions/layout.html" %}
 {% load static %}
 {% block body %}
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="{% static 'auctions/img/breadcrumb.jpg' %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb__text">
-                    <h2>Create Auction</h2>
-                    <div class="breadcrumb__option">
-                        <a href="{% url 'index' %}">Home</a>
-                        <span>Create Auction</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
 <section class="checkout spad">
     <div class="container">
-      {% if message %}
+        {% if message %}
         <div class="row">
             <div class="col-lg-12">
                 <h6><span class="icon_tag_alt"></span> {{ message }}
                 </h6>
             </div>
         </div>
-      {% endif %}
+        {% endif %}
         <div class="checkout__form">
             <h4>Create Auction</h4>
             <form action="{% url 'create-auction' %}" method="post">
-              {% csrf_token %}
-
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
                       <div class="row">
                         {{ form }}
                       </div>
-                        <!-- <div class="row">
-                            <div class="col-lg-12">
-                                <div class="checkout__input">
-                                    <p>Username<span>*</span></p>
-                                    <input type="text" name="username">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="checkout__input">
-                            <p>Email<span>*</span></p>
-                            <input type="email" name="email">
-                        </div>
-
-                        <div class="checkout__input">
-                            <p>Password<span>*</span></p>
-                            <input type="password" name="password">
-                        </div>
-
-                        <div class="checkout__input">
-                            <p>Confirm Password<span>*</span></p>
-                            <input type="password" name="confirmation">
-                        </div> -->
                         <div class="row">
-                          <div class="checkout__input">
-                            <button type="submit" class="site-btn" type="submit">Save Listing</button>
-                          </div>
+                            <div class="checkout__input">
+                                <button type="submit" class="site-btn" type="submit">Save Listing</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,14 +31,5 @@
         </div>
     </div>
 </section>
-  <!-- <h2>Create Auction</h2>
-  {% if message %}
-      <div>{{ message }}</div>
-  {% endif %}
-  <form action="{% url 'create-auction' %}" method="post">
-      {% csrf_token %}
-      {{ form }}
-      <button class="btn btn-primary" type="submit">Save Listing</button>
-  </form> -->
 
 {% endblock %}

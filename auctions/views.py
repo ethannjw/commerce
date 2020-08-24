@@ -37,18 +37,28 @@ def create_auction(request):
                                 'categories': categories,})
 
 def view_an_auction(request, auction_id):
+    current_user = User.objects.get(username=request.user.username)
     auction = Auction.objects.get(id=auction_id)
     bids = Bid.objects.filter(auction=auction)
     comments = Comment.objects.filter(auction=auction)
     comment_form = CommentForm(request.POST)
     bid_form = BidForm(request.POST, auction_id=auction_id)
+    message = None
+    if current_user == auction.winner:
+        message = "Congrats you won this auction!"
+    if auction in current_user.watched_list.all():
+        in_watchlist = True
+    else:
+        in_watchlist = False
     return render(request, "auctions/auction.html", {
                         'auction': auction,
                         'comment_form': comment_form,
                         'bid_form': bid_form,
                         'bids': bids,
                         'comments': comments,
-                        'categories': categories,})
+                        'categories': categories,
+                        'in_watchlist': in_watchlist,
+                        'message': message})
 
 class AuctionListView(ListView):
     model = Auction
@@ -73,6 +83,14 @@ def add_watchlist(request):
     current_user = User.objects.get(username=request.user.username)
     auction = Auction.objects.get(id=request.POST["auction_id"])
     current_user.watched_list.add(auction)
+    return redirect(f"/view-auction/{auction.id}", )
+
+@require_http_methods(["POST"])
+@login_required
+def remove_watchlist(request):
+    current_user = User.objects.get(username=request.user.username)
+    auction = Auction.objects.get(id=request.POST["auction_id"])
+    current_user.watched_list.remove(auction)
     return redirect(f"/view-auction/{auction.id}", )
 
 @login_required

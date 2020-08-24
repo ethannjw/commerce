@@ -2,7 +2,6 @@ from django import forms
 from .models import Auction, User, Bid, Comment
 
 
-
 class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
@@ -17,7 +16,7 @@ class AuctionForm(forms.ModelForm):
         widgets = {
             'auction_name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class' : 'form-control', 'placeholder': 'Description', 'rows':8}),
-            'category': forms.Select(choices=Auction.CATEGORIES, attrs={'class': 'form-control'},),
+            'category': forms.Select(choices=Auction.CATEGORIES, attrs={'class': 'hero__search__categories'},),
             'image_url': forms.TextInput(attrs={'class': 'form-control'}),
             'start_price': forms.NumberInput(attrs={'class': 'form-control'}),
         }
@@ -27,6 +26,7 @@ class AuctionForm(forms.ModelForm):
         if start_price < 0:
             raise forms.ValidationError("Auction price must be higher 0!")
         return start_price
+
 
 class BidForm(forms.ModelForm):
 
@@ -61,6 +61,7 @@ class BidForm(forms.ModelForm):
                 raise forms.ValidationError("Bid price must be higher than current bid!")
 
         return bid_price
+
 
 class CommentForm(forms.ModelForm):
     # def __init__(self, *args, **kwargs):

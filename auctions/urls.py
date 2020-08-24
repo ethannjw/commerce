@@ -1,8 +1,9 @@
 from django.urls import path
-
+from django.contrib import admin
 from . import views
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path("", views.AuctionListView.as_view(), name="index"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
@@ -11,9 +12,10 @@ urlpatterns = [
     path("view-auction/<int:auction_id>", views.view_an_auction, name="view-auction"),
     path("list-categories/", views.list_categories, name="list-categories"),
     path("category/<str:category>", views.show_categories, name="show-category"),
-    path("view-watchlist/<int:user_id>", views.WatchlistListView.as_view(), name="view-watchlist"),
+    path("view-watchlist/<int:user_id>", views.view_watchlist, name="view-watchlist"),
     path("close-auction/", views.close_auction, name="close-auction"),
     path("add-watchlist/", views.add_watchlist, name="add-watchlist"),
+    path("remove-watchlist/", views.remove_watchlist, name="remove-watchlist"),
     path("bid-auction/", views.bid_auction, name="bid-auction"),
     path("add-comment/", views.add_comment, name="add-comment"),
 ]

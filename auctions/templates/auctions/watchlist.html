@@ -1,108 +1,44 @@
 {% extends "auctions/layout.html" %}
 {% load static %}
 {% block body %}
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="{% static 'auctions/img/breadcrumb.jpg' %}">
+<section class="product spad">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb__text">
-                    <h2>My Watchlist</h2>
-                    <div class="breadcrumb__option">
-                        <a href="{% url 'index' %}">Home</a>
-                        <span>My Watchlist</span>
-                    </div>
+        {% if message %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6><span class="icon_tag_alt"></span> {{ message }}
+                    </h6>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
-  <!-- <h2>My Watchlist</h2>
-  {% if message %}
-    <div>{{ message }}</div>
-  {% endif %}
-
-  {% for auction in watchlist %}
-    <div>
-      <h3><a href="{% url 'view-auction' auction.id %}">{{auction.auction_name}}</a></h3>
-
-    </div>
-  {% endfor%} -->
-  <section class="product spad">
-    <div class="container">
-      <div class="col-lg-12 col-md-12">
-        <div class="product__discount">
-          <div class="section-title product__discount__title">
-            <h2>My Watchlist</h2>
-          </div>
-          <div class="row">
-            <div class="filter__item">
-              <div class="row">
-                {% for auction in auctions %}
-                {% if auction.open_status %}
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                      <div class="product__item">
-                          <div class="product__item__pic set-bg" data-setbg="{{auction.image_url}}">
-                              <ul class="product__item__pic__hover">
-                                  <li><a href="{% url 'view-auction' auction.id %}"><i class="fa fa-shopping-cart"></i></a></li>
-                              </ul>
-                          </div>
-                          <div class="product__item__text">
-                              <h6><a href="{% url 'view-auction' auction.id %}">{{auction.auction_name}}</a></h6>
-                              {% if auction.close_price %}
-                              <h5>Highest Bid: ${{auction.close_price}}</h5>
-                              {% else %}
-                              <h5>Price: ${{auction.start_price}}</h5>
-                              {% endif%}
-                          </div>
-                      </div>
-                  </div>
-                  {% endif%}
-                {% endfor%}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<!-- <section class="product spad">
-    <div class="container">
+        {% endif %}
         <div class="col-lg-12 col-md-12">
             <div class="product__discount">
                 <div class="section-title product__discount__title">
                     <h2>My Watchlist</h2>
                 </div>
                 <div class="row">
-                    <div class="filter__item">
-                        <div class="row">
-                            {% for auction in watchlist %}
-                            {% if auction.open_status %}
-                            <div class="col-lg-4 col-md-6 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{auction.image_url}}">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="{% url 'view-auction' auction.id %}"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="{% url 'view-auction' auction.id %}">{{auction.auction_name}}</a></h6>
-                                        {% if auction.close_price %}
-                                        <h5>Highest Bid: ${{auction.close_price}}</h5>
-                                        {% else %}
-                                        <h5>Price: ${{auction.start_price}}</h5>
-                                        {% endif%}
-                                    </div>
-                                </div>
+                    {% for auction in auctions %}
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="{{auction.image_url}}">
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="{% url 'view-auction' auction.id %}"><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
                             </div>
-                            {% endif%}
-                            {% endfor%}
+                            <div class="product__item__text">
+                                <h6><a href="{% url 'view-auction' auction.id %}">{{auction.auction_name}}</a></h6>
+                                {% if auction.close_price %}
+                                <h5>Highest Bid: ${{auction.close_price}}</h5>
+                                {% else %}
+                                <h5>Price: ${{auction.start_price}}</h5>
+                                {% endif%}
+                            </div>
                         </div>
                     </div>
+                    {% endfor%}
                 </div>
             </div>
         </div>
     </div>
-</section> -->
+</section>
 {% endblock %}
