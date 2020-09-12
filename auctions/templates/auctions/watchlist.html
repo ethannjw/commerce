@@ -27,6 +27,7 @@
                             </div>
                             <div class="product__item__text">
                                 <h6><a href="{% url 'view-auction' auction.id %}">{{auction.auction_name}}</a></h6>
+                                <p>{{auction.description}}</p>
                                 {% if auction.close_price %}
                                 <h5>Highest Bid: ${{auction.close_price}}</h5>
                                 {% else %}

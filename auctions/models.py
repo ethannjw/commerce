@@ -16,7 +16,7 @@ class Auction(models.Model):
     description = models.TextField()
 
     start_price = models.DecimalField(max_digits=9, decimal_places=2)
-    close_price = models.DecimalField(null=True, max_digits=9, decimal_places=2)
+    close_price = models.DecimalField(null=True, blank=True, max_digits=9, decimal_places=2)
 
     created_time = models.DateTimeField(auto_now_add=True)
     close_time = models.DateTimeField(null=True, blank=True)
